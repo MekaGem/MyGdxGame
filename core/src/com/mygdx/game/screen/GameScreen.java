@@ -59,7 +59,7 @@ public class GameScreen extends BasicScreen {
 
     @Override
     public void renderScreen() {
-//        System.err.println(actor.getX() + ":" + actor.getY());
+        System.err.println(actor.getX() + ":" + actor.getY());
 //        stage.getViewport().getCamera().translate(actor.getX(), actor.getY(), 0);
 //        stage.getViewport().getCamera().update();
         stage.draw();
