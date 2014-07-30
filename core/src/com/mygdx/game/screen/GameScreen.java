@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.model.manager.Manager;
 import com.mygdx.game.model.manager.Message;
-import com.mygdx.game.model.object.Man;
+import com.mygdx.game.model.object.Unit;
 
 public class GameScreen extends BasicScreen {
     private Actor actor = new Actor() {
@@ -33,7 +32,7 @@ public class GameScreen extends BasicScreen {
         }
     };
 
-    private Man man = new Man();
+    private Unit man = new Unit();
 
     public GameScreen(MyGdxGame game) {
         super(game);
@@ -45,9 +44,6 @@ public class GameScreen extends BasicScreen {
         super.show();
         stage.addActor(actor);
         actor.setPosition(0, 0);
-        Manager manIdle = man.new ManIdle(man);
-        man.subscribe(manIdle);
-
     }
 
     @Override

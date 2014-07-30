@@ -6,12 +6,17 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public abstract class Manager {
-    private final Queue<Message> messages = new LinkedList<>();
+    public final Queue<Message> messages = new LinkedList<>();
     private final GameObject reference;
+    private boolean stopped = false;
 
     protected Manager(GameObject reference) {
         this.reference = reference;
     }
+
+    public void onStart () {}
+
+    public void onStop () {}
 
     public void receive(Message message) {}
 
@@ -22,21 +27,29 @@ public abstract class Manager {
     }
 
     public final void update(float delta) {
-        while (!messages.isEmpty()) {
+        while (!messages.isEmpty() && !stopped) {
             receive(messages.poll());
         }
-        act(delta);
+        if(!stopped)
+            act(delta);
     }
 
     protected final void stop() {
-        reference.unsubscribe(this);
+        if(!stopped) {
+            reference.unsubscribe(this);
+            onStop();
+            stopped = true;
+        }
     }
 
     protected final void stop(Manager manager) {
-        stop();
-        if (manager.reference != reference) {
-            throw new IllegalArgumentException("Different reference to GameObject");
+        if(!stopped) {
+            stop();
+            if (manager.reference != reference) {
+                throw new IllegalArgumentException("Different reference to GameObject");
+            }
+            manager.messages.addAll(messages);
+            reference.subscribe(manager);
         }
-        reference.subscribe(manager);
     }
 }
